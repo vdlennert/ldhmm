@@ -1,4 +1,4 @@
-Package: ldhmm
+Package: ldhmmfork
 Type: Package
 Title: Hidden Markov Model for Financial Time-Series Based on Lambda
         Distribution
