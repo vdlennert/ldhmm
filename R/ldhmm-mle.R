@@ -100,6 +100,24 @@ ldhmm.mle <- function(object, x, min.gamma=1e-6, decode=FALSE,
         p@iterations <- iter_cnt # opt.out$niter 
         
     } 
+  
+    else if (object@mle.optimizer == "Nelder-Mead") 
+    {
+        v <- ldhmm.n2w(object)
+        opt.out <- optimx::optimx(v, fn, 
+                                  method = c("Nelder-Mead"),
+                                  itnmax = iterlim, 
+                                  control = list(trace=TRUE))
+        
+        # construct result object
+        v.out <- as.numeric(opt.out[1,])[1:np]
+        p <- ldhmm.w2n(object, v.out, mu.scale=mu.scale)
+        p@mllk <- opt.out$value
+        p@return.code <- opt.out$convcode
+        p@iterations <- iter_cnt # opt.out$niter 
+        
+    } 
+  
     else stop(paste("Error: Unknown MLE optimizer", object@mle.optimizer))
     
     p@AIC <- 2*(p@mllk + np)
